@@ -1,5 +1,10 @@
 import streamlit as st
 import os
+import warnings
+# Suppress deprecation warnings
+warnings.filterwarnings("ignore", category=FutureWarning, module="langchain_google_genai")
+warnings.filterwarnings("ignore", message=".*google.generativeai.*")
+
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import create_retrieval_chain
@@ -34,8 +39,15 @@ st.markdown("""
 
 st.title("💰 EasyFinance – Your AI Financial Assistant")
 
-# Load API Key from environment
-api_key = os.getenv("GEMINI_API_KEY")
+# Load API Key from Streamlit secrets (preferred) or environment
+api_key = None
+try:
+    api_key = st.secrets.get("GEMINI_API_KEY")
+except Exception:
+    api_key = None
+
+if not api_key:
+    api_key = os.getenv("GEMINI_API_KEY")
 
 with st.sidebar:
     st.header("Document Source")
