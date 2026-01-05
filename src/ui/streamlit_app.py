@@ -34,12 +34,10 @@ st.markdown("""
 
 st.title("💰 EasyFinance – Your AI Financial Assistant")
 
+# Load API Key from environment
+api_key = os.getenv("GEMINI_API_KEY")
+
 with st.sidebar:
-    st.header("Configuration")
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        api_key = st.text_input("Enter Gemini API Key", type="password")
-    
     st.header("Document Source")
     uploaded_file = st.file_uploader("Upload a PDF for RAG", type="pdf")
     
